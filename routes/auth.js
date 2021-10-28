@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/User');
 const CryptoJS = require('crypto-js');
-require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
 //Register
 router.post('/register', async (req, res) => {
@@ -25,16 +25,36 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
 	try {
 		const user = await User.findOne({ username: req.body.username });
-		!user && res.status(401).json('Wrong credentials');
+		!user && res.status(401).json('Wrong credentials!');
 
-		const hashedPass = CryptoJS.AES.decrypt(user.password, process.env.SECRET);
-		const pass = hashedPass.toString(CryptoJS.enc.Utf8);
+		// extract pass and decode
+		const hashedPassword = CryptoJS.AES.decrypt(
+			user.password,
+			process.env.SECRET
+		);
+		const pass = hashedPassword.toString(CryptoJS.enc.Utf8);
 
-		pass !== req.body.password && res.status(401).json('Wrong credentials');
+		// check if passwords match
+		pass !== req.body.password && res.status(401).json('Wrong credentials!');
 
-		const { password, ...otherCredentials } = user._doc;
+		// const JWToken = jwt.sign(
+		// 	{ id: user._id, isAdmin: user.isAdmin },
+		// 	process.env.JWT_SECRET,
+		// 	{ expiresIn: '24h' }
+		// );
 
-		res.status(200).json(otherCredentials);
+		const JWToken = jwt.sign(
+			{
+				id: user._id,
+				isAdmin: user.isAdmin
+			},
+			process.env.JWT_SECRET,
+			{ expiresIn: '24h' }
+		);
+
+		const { password, ...credentials } = user._doc;
+
+		res.status(200).json({ ...credentials, JWToken });
 	} catch (err) {
 		res.json({ message: err.message });
 	}
