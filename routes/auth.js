@@ -37,12 +37,6 @@ router.post('/login', async (req, res) => {
 		// check if passwords match
 		pass !== req.body.password && res.status(401).json('Wrong credentials!');
 
-		// const JWToken = jwt.sign(
-		// 	{ id: user._id, isAdmin: user.isAdmin },
-		// 	process.env.JWT_SECRET,
-		// 	{ expiresIn: '24h' }
-		// );
-
 		const JWToken = jwt.sign(
 			{
 				id: user._id,
