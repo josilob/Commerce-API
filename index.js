@@ -5,7 +5,7 @@ require('dotenv').config();
 
 // route imports
 const userRoute = require('./routes/user');
-const authRoute = require('./routes/auth');
+const { authRoute } = require('./routes/auth');
 
 // use parsers for requests
 app.use(express.json()); // parse json bodies
@@ -21,7 +21,7 @@ mongoose
 app.get('/', (req, res) => {
 	res.json({ message: 'Marketplace backend home' });
 });
-app.use('/api/user', userRoute);
+app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 
 // App listening on port
