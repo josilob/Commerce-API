@@ -14,6 +14,21 @@ router.get('/:id', verifyTokenAndAdmin, async (req, res) => {
 	}
 });
 
+// Get all users
+router.get('/', verifyTokenAndAdmin, async (req, res) => {
+	const query = req.query.new;
+	try {
+		const users = query
+			? await User.find().sort({ _id: -1 }).limit(5)
+			: await User.find();
+		// const { password, ...others } = user._doc;
+
+		res.status(200).json(users);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
+
 // Edit user
 router.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
 	if (req.body.password) {
