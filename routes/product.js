@@ -42,27 +42,21 @@ router.post('/', verifyTokenAndAdmin, async (req, res) => {
 // 	}
 // });
 
-// // Edit user
-// router.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
-// 	if (req.body.password) {
-// 		req.body.password = CryptoJS.AES.encrypt(
-// 			req.body.password,
-// 			process.env.SECRET
-// 		).toString();
-// 	}
-// 	try {
-// 		const updatedUser = await User.findByIdAndUpdate(
-// 			req.params.id,
-// 			{
-// 				$set: req.body
-// 			},
-// 			{ new: true }
-// 		);
-// 		res.status(200).json(updatedUser);
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
+// Edit Product
+router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
+	try {
+		const updatedProduct = await Product.findByIdAndUpdate(
+			req.params.id,
+			{
+				$set: req.body
+			},
+			{ new: true }
+		);
+		res.status(200).json(updatedProduct);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
 
 // // Delete user
 // router.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
