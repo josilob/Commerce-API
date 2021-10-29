@@ -16,17 +16,16 @@ router.post('/', verifyTokenAndAdmin, async (req, res) => {
 		res.status(500).json({ message: err.message });
 	}
 });
-// // Get user
-// router.get('/:id', verifyTokenAndAdmin, async (req, res) => {
-// 	try {
-// 		const user = await User.findById(req.params.id);
-// 		const { password, ...others } = user._doc;
 
-// 		res.status(200).json(others);
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
+// Get Product
+router.get('/:id', async (req, res) => {
+	try {
+		const product = await User.findById(req.params.id);
+		res.status(200).json(product);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
 
 // // Get all users
 // router.get('/', verifyTokenAndAdmin, async (req, res) => {
@@ -58,14 +57,14 @@ router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
 	}
 });
 
-// // Delete user
-// router.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
-// 	try {
-// 		await User.findByIdAndDelete(req.params.id);
-// 		res.status(200).json('User deleted successfully!');
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
+// Delete user
+router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
+	try {
+		await Product.findByIdAndDelete(req.params.id);
+		res.status(200).json('Product deleted successfully!');
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
 
 module.exports = router;
