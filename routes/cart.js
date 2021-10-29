@@ -17,36 +17,25 @@ router.post('/', verifyToken, async (req, res) => {
 	}
 });
 
-// // Get Cart
-// router.get('/:id', async (req, res) => {
-// 	try {
-// 		const cart = await Cart.findById(req.params.id);
-// 		res.status(200).json(cart);
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
+// Get User's Cart
+router.get('/:userId', verifyTokenAndAuthorization, async (req, res) => {
+	try {
+		const cart = await Cart.findOne({ userId: req.params.userId });
+		res.status(200).json(cart);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
 
-// // Get all products
-// router.get('/', async (req, res) => {
-// 	const queryNew = req.query.new;
-// 	const queryCategory = req.query.category;
-// 	try {
-// 		let products;
-
-// 		if (queryNew) {
-// 			products = await Product.find().sort({ createdAt: -1 }).limit(5);
-// 		} else if (queryCategory) {
-// 			products = await Product.find({ categories: { $in: [queryCategory] } });
-// 		} else {
-// 			products = await Product.find();
-// 		}
-
-// 		res.status(200).json(products);
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
+// // Get all carts (as admin)
+router.get('/', verifyTokenAndAdmin, async (req, res) => {
+	try {
+		const carts = await Cart.find();
+		res.status(200).json(carts);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
 
 // Edit Cart
 router.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
@@ -64,14 +53,14 @@ router.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
 	}
 });
 
-// // Delete user
-// router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
-// 	try {
-// 		await Cart.findByIdAndDelete(req.params.id);
-// 		res.status(200).json('Cart deleted successfully!');
-// 	} catch (err) {
-// 		res.status(500).json(err);
-// 	}
-// });
+// Delete cart
+router.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
+	try {
+		await Cart.findByIdAndDelete(req.params.id);
+		res.status(200).json('Cart deleted successfully!');
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
 
 module.exports = router;
