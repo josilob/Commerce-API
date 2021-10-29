@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 require('dotenv').config();
+const cors = require('cors');
 
 // route imports
 const authRoute = require('./routes/auth');
@@ -25,6 +26,8 @@ mongoose
 app.get('/', (req, res) => {
 	res.json({ message: 'Marketplace backend home' });
 });
+
+app.use(cors());
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
