@@ -9,6 +9,7 @@ const userRoute = require('./routes/user');
 const productRoute = require('./routes/product');
 const cartRoute = require('./routes/cart');
 const orderRoute = require('./routes/order');
+const stripeRoute = require('./routes/stripe');
 
 // use parsers for requests
 app.use(express.json()); // parse json bodies
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
 app.use('/api/cart', cartRoute);
 app.use('/api/order', orderRoute);
+app.use('/api/checkout', orderRoute);
 
 // App listening on port
 app.listen(process.env.PORT || 27017, () =>
