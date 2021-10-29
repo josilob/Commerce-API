@@ -1,6 +1,10 @@
 const User = require('../models/User');
-const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require('./auth');
 const router = require('express').Router();
+const {
+	verifyToken,
+	verifyTokenAndAuthorization,
+	verifyTokenAndAdmin
+} = require('./verify');
 
 // Get user
 router.get('/:id', verifyTokenAndAdmin, async (req, res) => {
@@ -21,7 +25,6 @@ router.get('/', verifyTokenAndAdmin, async (req, res) => {
 		const users = query
 			? await User.find().sort({ _id: -1 }).limit(5)
 			: await User.find();
-		// const { password, ...others } = user._doc;
 
 		res.status(200).json(users);
 	} catch (err) {

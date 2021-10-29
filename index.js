@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 // route imports
+const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
-const { authRoute } = require('./routes/auth');
+const productRoute = require('./routes/product');
 
 // use parsers for requests
 app.use(express.json()); // parse json bodies
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/products', productRoute);
 
 // App listening on port
 app.listen(process.env.PORT || 27017, () =>
