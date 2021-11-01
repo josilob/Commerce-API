@@ -28,8 +28,12 @@ app.get('/', (req, res) => {
 });
 
 var whitelist = [
+	'localhost:27017',
+	'localhost:3000',
 	'http://localhost:3000',
-	'https://marketplace-neon.vercel.app/'
+	'http://localhost:27017',
+	'https://marketplace-neon.vercel.app/',
+	'marketplace-neon.vercel.app/'
 ];
 var corsOptions = {
 	origin: function (origin, callback) {
@@ -42,7 +46,8 @@ var corsOptions = {
 	methods: ['GET', 'POST', 'PUT', 'DELETE']
 };
 
-app.use(cors(corsOptions));
+app.use(cors({ corsOptions }));
+// app.use(cors({ origin: '*' }));
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
