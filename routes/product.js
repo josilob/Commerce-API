@@ -20,7 +20,7 @@ router.post('/', verifyTokenAndAdmin, async (req, res) => {
 // Get Product
 router.get('/:id', async (req, res) => {
 	try {
-		const product = await User.findById(req.params.id);
+		const product = await Product.findById(req.params.id);
 		res.status(200).json(product);
 	} catch (err) {
 		res.status(500).json(err);
@@ -64,7 +64,7 @@ router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
 	}
 });
 
-// Delete user
+// Delete Product
 router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
 	try {
 		await Product.findByIdAndDelete(req.params.id);
