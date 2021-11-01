@@ -38,9 +38,11 @@ var corsOptions = {
 		} else {
 			callback(new Error('Not allowed by CORS'));
 		}
-	}
+	},
+	methods: ['GET', 'POST', 'PUT', 'DELETE']
 };
 
+app.use(cors(corsOptions));
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
