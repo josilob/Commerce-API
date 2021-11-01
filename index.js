@@ -27,8 +27,9 @@ app.get('/', (req, res) => {
 	res.json({ message: 'Marketplace backend home' });
 });
 
-const whitelist = [
+const allowedOrigins = [
 	'http://localhost:3000',
+	'http://localhost:27017',
 	'https://marketplace-srv.vercel.app'
 ];
 const corsOptions = {
@@ -41,7 +42,18 @@ const corsOptions = {
 	},
 	methods: ['GET', 'POST', 'PUT', 'DELETE']
 };
-app.use(cors(corsOptions));
+
+app.use((req, res, next) => {
+	const origin = req.headers.origin;
+	const theOrigin =
+		allowedOrigins.indexOf(origin) >= 0 ? origin : allowedOrigins[0];
+	res.header('Access-Control-Allow-Origin', theOrigin);
+	res.header(
+		'Access-Control-Allow-Headers',
+		'Origin, X-Requested-With, Content-Type, Accept'
+	);
+	next();
+});
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
