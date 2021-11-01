@@ -27,33 +27,33 @@ app.get('/', (req, res) => {
 	res.json({ message: 'Marketplace backend home' });
 });
 
-var whitelist = [
-	'localhost:27017',
-	'localhost:3000',
-	'http://localhost:3000',
-	'http://localhost:27017',
-	'https://marketplace-neon.vercel.app/',
-	'marketplace-neon.vercel.app/'
-];
-var corsOptions = {
-	origin: function (origin, callback) {
-		if (whitelist.indexOf(origin) !== -1) {
-			callback(null, true);
-		} else {
-			callback(new Error('Not allowed by CORS'));
-		}
-	},
-	methods: ['GET', 'POST', 'PUT', 'DELETE']
-};
+// const whitelist = [
+// 	'localhost:27017',
+// 	'localhost:3000',
+// 	'http://localhost:3000',
+// 	'http://localhost:27017',
+// 	'https://marketplace-neon.vercel.app/',
+// 	'marketplace-neon.vercel.app/'
+// ];
+// const corsOptions = {
+// 	origin: function (origin, callback) {
+// 		if (whitelist.indexOf(origin) !== -1) {
+// 			callback(null, true);
+// 		} else {
+// 			callback(new Error('Not allowed by CORS'));
+// 		}
+// 	},
+// 	methods: ['GET', 'POST', 'PUT', 'DELETE']
+// };
 
-app.use(cors({ corsOptions }));
-// app.use(cors({ origin: '*' }));
-app.use('/api/users', userRoute);
-app.use('/api/auth', authRoute);
-app.use('/api/products', productRoute);
-app.use('/api/cart', cartRoute);
-app.use('/api/order', orderRoute);
-app.use('/api/checkout', orderRoute);
+// app.use(cors({ corsOptions }));
+app.use(cors({ origin: '*' }));
+app.use('/users', userRoute);
+app.use('/auth', authRoute);
+app.use('/products', productRoute);
+app.use('/cart', cartRoute);
+app.use('/order', orderRoute);
+app.use('/checkout', orderRoute);
 
 // App listening on port
 app.listen(process.env.PORT || 27017, () =>
