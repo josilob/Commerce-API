@@ -27,7 +27,21 @@ app.get('/', (req, res) => {
 	res.json({ message: 'Marketplace backend home' });
 });
 
-app.use(cors());
+const whitelist = [
+	'http://localhost:3000',
+	'https://marketplace-srv.vercel.app'
+];
+const corsOptions = {
+	origin: (origin, callback) => {
+		if (whitelist.indexOf(origin) !== -1) {
+			callback(null, true);
+		} else {
+			callback(new Error('Not allowed by CORS'));
+		}
+	},
+	methods: ['GET', 'POST', 'PUT', 'DELETE']
+};
+app.use(cors(corsOptions));
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
