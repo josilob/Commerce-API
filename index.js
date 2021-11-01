@@ -27,7 +27,10 @@ app.get('/', (req, res) => {
 	res.json({ message: 'Marketplace backend home' });
 });
 
-var whitelist = ['http://localhost:3000', 'https://marketplace-srv.vercel.app'];
+var whitelist = [
+	'http://localhost:3000',
+	'https://marketplace-neon.vercel.app/'
+];
 var corsOptions = {
 	origin: function (origin, callback) {
 		if (whitelist.indexOf(origin) !== -1) {
