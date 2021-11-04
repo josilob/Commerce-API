@@ -25,16 +25,13 @@ mongoose
 // CORS ALLOWED DOMAINS
 app.use(function (req, res, next) {
 	const allowedDomains = [
-		'http://localhost:3000',
-		'https://marketplace-josilob.vercel.app'
+		'http://localhost:3000/',
+		'https://marketplace-josilob.vercel.app/'
 	];
 	const origin = req.headers.origin;
 	if (allowedDomains.includes(origin))
 		res.setHeader(('Access-Control-Allow-Origin', origin));
-	res.setHeader(
-		'Access-Control-Allow-Methods',
-		'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-	);
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
 	res.setHeader(
 		'Access-Control-Allow-Headers',
 		'X-Requested-With,content-type, Accept'
