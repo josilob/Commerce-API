@@ -52,8 +52,8 @@ app.use('/users', userRoute);
 app.use('/auth', authRoute);
 app.use('/products', productRoute);
 app.use('/cart', cartRoute);
-app.use('/order', orderRoute);
-app.use('/checkout', orderRoute);
+app.use('/orders', orderRoute);
+app.use('/checkout', stripeRoute);
 
 // App listening on port
 app.listen(process.env.PORT || 27017, () =>
