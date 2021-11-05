@@ -20,15 +20,15 @@ mongoose
 	.catch((err) => console.log(err.message));
 
 const headers = (req, res, next) => {
-	const origin =
-		req.headers.origin == 'http://localhost:3000'
-			? 'http://localhost:3000'
-			: 'https://marketplace-josilob.vercel.app/';
-	res.setHeader('Access-Control-Allow-Origin', origin);
-	res.setHeader(
-		'Access-Control-Allow-Methods',
-		'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-	);
+	const origin = req.headers.origin;
+
+	if (
+		origin == 'http://localhost:3000' ||
+		origin == 'https://marketplace-josilob.vercel.app'
+	)
+		res.setHeader('Access-Control-Allow-Origin', origin);
+
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 	res.setHeader('Access-Control-Allow-Credentials', true);
 	next();
