@@ -19,28 +19,34 @@ mongoose
 	.then(() => console.log('Successful connection'))
 	.catch((err) => console.log(err.message));
 
-app.use(function (req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
+const headers = (req, res, next) => {
+	const origin =
+		req.headers.origin == 'http://localhost:3000'
+			? 'http://localhost:3000'
+			: 'https://marketplace-josilob.vercel.app/';
+	res.setHeader('Access-Control-Allow-Origin', origin);
+	res.setHeader(
+		'Access-Control-Allow-Methods',
+		'GET, POST, OPTIONS, PUT, PATCH, DELETE'
 	);
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	res.setHeader('Access-Control-Allow-Credentials', true);
 	next();
-});
-// use parsers for requests
+};
+
+// use parser for requests
 app.use(express.json()); // parse json bodies
-// app.use(express.urlencoded({ extended: false }));
 
 // Server routes
 app.get('/', (req, res) => {
 	res.json({ message: 'Marketplace backend home' });
 });
-app.use('/users', userRoute);
-app.use('/auth', authRoute);
-app.use('/products', productRoute);
-app.use('/cart', cartRoute);
-app.use('/orders', orderRoute);
-app.use('/checkout', stripeRoute);
+app.use('/users', headers, userRoute);
+app.use('/auth', headers, authRoute);
+app.use('/products', headers, productRoute);
+app.use('/cart', headers, cartRoute);
+app.use('/orders', headers, orderRoute);
+app.use('/checkout', headers, stripeRoute);
 
 // App listening on port
 app.listen(process.env.PORT || 27017, () =>
