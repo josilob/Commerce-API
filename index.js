@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 require('dotenv').config();
-// const cors = require('cors');
+const cors = require('cors');
 
 // route imports
 const authRoute = require('./routes/auth');
@@ -22,22 +22,20 @@ mongoose
 	.then(() => console.log('Successful connection'))
 	.catch((err) => console.log(err.message));
 
-// CORS ALLOWED DOMAINS
+// CORS ALLOWED DOMAIN
+const corsOptions = {
+	origin: 'https://marketplace-neon.vercel.app',
+	optionsSuccessStatus: 200
+};
 // app.use(function (req, res, next) {
-// 	const allowedDomains = [
-// 		'http://localhost:3000/',
-// 		'https://marketplace-josilob.vercel.app/'
-// 	];
-// 	const origin = req.headers.origin;
-// 	if (allowedDomains.indexOf(origin) != -1)
-// 		res.setHeader(('Access-Control-Allow-Origin', origin));
-// 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-// 	res.setHeader(
-// 		'Access-Control-Allow-Headers',
-// 		'X-Requested-With,content-type, Accept'
+// 	res.header(
+// 		'Access-Control-Allow-Origin',
+// 		'https://marketplace-josilob.vercel.app'
 // 	);
-// 	res.setHeader('Access-Control-Allow-Credentials', true);
-
+// 	res.header(
+// 		'Access-Control-Allow-Headers',
+// 		'Origin, X-Requested-With, Content-Type, Accept'
+// 	);
 // 	next();
 // });
 
@@ -45,13 +43,12 @@ mongoose
 app.get('/', (req, res) => {
 	res.json({ message: 'Marketplace backend home' });
 });
-// app.use(cors({ origin: '*' }));
-app.use('/users', userRoute);
-app.use('/auth', authRoute);
-app.use('/products', productRoute);
-app.use('/cart', cartRoute);
-app.use('/orders', orderRoute);
-app.use('/checkout', stripeRoute);
+app.use('/users', cors(corsOptions), userRoute);
+app.use('/auth', cors(corsOptions), authRoute);
+app.use('/products', cors(corsOptions), productRoute);
+app.use('/cart', cors(corsOptions), cartRoute);
+app.use('/orders', cors(corsOptions), orderRoute);
+app.use('/checkout', cors(corsOptions), stripeRoute);
 
 // App listening on port
 app.listen(process.env.PORT || 27017, () =>
