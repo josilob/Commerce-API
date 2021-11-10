@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
-// const cors = require('cors');
+const cors = require('cors');
 
 // route imports
 const authRoute = require('./routes/auth');
@@ -21,13 +21,11 @@ mongoose
 
 // const headers = (req, res, next) => {
 // 	const origin = req.headers.origin;
-
 // 	if (
 // 		origin == 'http://localhost:3000/' ||
 // 		origin == 'https://marketplace-josilob.vercel.app/'
 // 	)
 // 		res.setHeader('Access-Control-Allow-Origin', origin);
-
 // 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 // 	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 // 	res.setHeader('Access-Control-Allow-Credentials', true);
@@ -37,7 +35,30 @@ mongoose
 // use parser for requests
 app.use(express.json()); // parse json bodies
 
-// app.options('*', cors());
+// app.use(cors());
+
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', req.headers.origin);
+	res.header(
+		'Access-Control-Allow-Headers',
+		'Origin, X-Requested-With, Content-Type,  Accept, Authorization'
+	);
+	res.header(
+		'Access-Control-Allow-Methods',
+		'GET,POST,fetch, PATCH,OPTIONS,DELETE'
+	);
+	res.header('Access-Control-Allow-Credentials', true);
+
+	if (req.method === 'OPTIONS') {
+		res.header(
+			'Access-Control-Allow-Methods',
+			'PUT, POST, PATCH,FETCH, DELETE, GET'
+		);
+		return res.json({});
+	} else {
+		next();
+	}
+});
 
 // Server routes
 app.get('/', (req, res) => {
